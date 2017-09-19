@@ -57,4 +57,13 @@ class ControllerBase
     self.send(name)
     render(name) unless already_built_response?
   end
+
+  def form_authenticity_token
+  end
+
+  def check_authenticity_token
+  end
+
+  def self.protect_from_forgery
+  end
 end
