@@ -4,7 +4,7 @@ class Flash
   attr_reader :now, :later
 
   def initialize(req)
-    @now = JSON.parse(req.cookies['_rec_room_session']) rescue {}
+    @now = JSON.parse(req.cookies['_req_room_session']) rescue {}
     @later = {}
   end
 
@@ -17,6 +17,6 @@ class Flash
   end
 
   def store_flash(res)
-    res.set_cookie('_rec_room_session', path: '/', value: later.to_json)
+    res.set_cookie('_rec_room_flash', path: '/', value: later.to_json)
   end
 end

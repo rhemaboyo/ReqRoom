@@ -2,24 +2,24 @@ require 'json'
 require 'byebug'
 
 class Session
-  attr_reader :hash
+  attr_reader :data
   # find the cookie for this app
-  # deserialize the cookie into a hash
+  # deserialize the cookie into a data
   def initialize(req)
-    @hash = JSON.parse(req.cookies['_req_room_session']) rescue {}
+    @data = JSON.parse(req.cookies['_req_room_session']) rescue {}
   end
 
   def [](key)
-    hash[key]
+    data[key]
   end
 
   def []=(key, val)
-    hash[key] = val
+    data[key] = val
   end
 
-  # serialize the hash into json and save in a cookie
+  # serialize the data into json and save in a cookie
   # add to the responses cookies
   def store_session(res)
-    res.set_cookie('_req_room_session', path: '/', value: hash.to_json)
+    res.set_cookie('_req_room_session', path: '/', value: data.to_json)
   end
 end
