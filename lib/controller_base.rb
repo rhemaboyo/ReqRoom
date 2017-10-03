@@ -24,6 +24,7 @@ class ControllerBase
     res.location = url
     res.status = 302
     session.store_session(res)
+    flash.store_flash(@res)
 
     raise "double redirect" if already_built_response?
     @already_built_response = true
@@ -33,6 +34,7 @@ class ControllerBase
     res.write(content)
     res['Content-Type'] = content_type
     session.store_session(res)
+    flash.store_flash(@res)
 
     raise "double render" if already_built_response?
     @already_built_response = true

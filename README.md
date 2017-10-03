@@ -71,3 +71,22 @@ def run(req, res)
   controller.invoke_action(action_name)
 end
 ```
+
+## Flash
+Builds a hash-like object from a given request, to store data that will only be available in the app's cookies for the current and next response cycle.
+
+### #now
+Values set in `flash.now` are only available in the current request cycle. Usually used to render an error when an action doesn't save:
+
+```ruby
+def create
+    @user = User.find_by_credentials(params[:user][:username],params[:user][:password])
+    if @user
+      login(@user)
+      render :show
+    else
+      flash.now[:error] = 'Invalid username/password combination'
+      render :new
+    end
+  end
+```
