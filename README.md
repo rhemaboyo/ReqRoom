@@ -33,6 +33,23 @@ It uses the Rack Library to set cookies  and get cookies:
 `Rack::Request#cookies` returns a hash like object which you can then use to set data.
 `Rack::Response#set_cookie` allows you to add that data to the responses cookies.
 
+## Route
+Builds a route object with pattern, http_method, controller_class, and action_name instance variables.
+
+### #run
+Sets the route params based on the request path and the route pattern, creates a new instance of its controller class, and invokes the appropriate action.
+
+```ruby
+def run(req, res)
+  route_params = {}
+  match_data = pattern.match(req.path)
+  match_data.names.each do |key|
+    route_params[key] = match_data[key]
+  end
+  controller = controller_class.new(req, res, route_params)
+  controller.invoke_action(action_name)
+end
+```
 ## Router
 
 **Router** matches a `Rack::Request` object's path with a route and then runs the appropriate method in that route's controller.
@@ -55,22 +72,6 @@ end
 ### #run(request, response)
 Takes in a request and checks if there are any routes that match the request method and path.
 
-## Route
-
-### #run
-Sets the route params based on the request path and the route pattern, creates a new instance of its controller class, and invokes the appropriate action.
-
-```ruby
-def run(req, res)
-  route_params = {}
-  match_data = pattern.match(req.path)
-  match_data.names.each do |key|
-    route_params[key] = match_data[key]
-  end
-  controller = controller_class.new(req, res, route_params)
-  controller.invoke_action(action_name)
-end
-```
 
 ## Flash
 Builds a hash-like object from a given request, to store data that will only be available in the app's cookies for the current and next response cycle.
@@ -80,13 +81,13 @@ Values set in `flash.now` are only available in the current request cycle. Usual
 
 ```ruby
 def create
-    @user = User.find_by_credentials(params[:user][:username],params[:user][:password])
-    if @user
-      login(@user)
-      render :show
-    else
-      flash.now[:error] = 'Invalid username/password combination'
-      render :new
-    end
+  @user = User.find_by_credentials(params[:user][:username],params[:user][:password])
+  if @user
+    login(@user)
+    render :show
+  else
+    flash.now[:error] = 'Invalid username/password combination'
+    render :new
   end
+end
 ```
