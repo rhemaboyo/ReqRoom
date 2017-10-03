@@ -53,14 +53,14 @@ class ControllerBase
     @flash ||= Flash.new(req)
   end
 
-  def invoke_action(name)
+  def invoke_action(action)
     if protect_from_forgery? && req.request_method != "GET"
       check_authenticity_token
     else
       set_authenticity_token
     end
-    self.send(name)
-    render(name) unless already_built_response?
+    self.send(action)
+    render(action) unless already_built_response?
   end
 
   def set_authenticity_token

@@ -6,14 +6,14 @@ ReqRoom is a light weight backend framework for building views and controllers, 
 
 **ControllerBase** serves as the parent class for all of the controllers in the app.
 
-### render_content(content, content_type)
+### #render_content(content, content_type)
 Sets the response object's `content_type` and `body`
 Sets an instance variable `@already_built_response` to ensure that content is not rendered twice.
 
-### redirect_to(url)
+### #redirect_to(url)
 Sets the response location to the given url and sets the status to 302.
 
-### render(template_name)
+### #render(template_name)
 Uses the controller and template names to construct paths to template files and creates a new ERB object to render.
 
 ```ruby
@@ -37,7 +37,7 @@ It uses the Rack Library to set cookies  and get cookies:
 
 **Router** matches a `Rack::Request` object's path with a route and then runs the appropriate method in that route's controller.
 
-### draw(&proc)
+### #draw(&proc)
 Takes a proc which instantiates which routes will be available.
 
 ```ruby
@@ -52,12 +52,12 @@ end
 end
 ```
 
-### run(request, response)
+### #run(request, response)
 Takes in a request and checks if there are any routes that match the request method and path.
 
 ## Route
 
-### run
+### #run
 Sets the route params based on the request path and the route pattern, creates a new instance of its controller class, and invokes the appropriate action.
 
 ```ruby
