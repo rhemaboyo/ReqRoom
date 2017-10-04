@@ -59,20 +59,20 @@ class ControllerBase
     if protect_from_forgery? && req.request_method != "GET"
       check_authenticity_token
     else
-      set_authenticity_token
+      form_authenticity_token
     end
     self.send(action)
     render(action) unless already_built_response?
   end
 
-  def set_authenticity_token
+  def form_authenticity_token
     @auth_token ||= SecureRandom.urlsafe_base64(16)
     res.set_cookie('auth_token', path: '/', value: @auth_token)
     @auth_token
   end
 
   def check_authenticity_token
-    token = @req.cookies["auth_token"]
+    token = req.cookies["auth_token"]
     unless token && token == params["auth_token"]
       raise "Invalid authenticity token"
     end
